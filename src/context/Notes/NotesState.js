@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import NotesContext from "./NotesContext";
 
 const NotesState = (props) => {
@@ -58,9 +58,35 @@ const NotesState = (props) => {
           "__v": 0
         }                
       ];
-    const [notes, setNotes] = React.useState(notesInitial);
+      const [notes, setNotes] = useState(notesInitial);
+      //Add a note
+      const addNote = (title, description, tag)=>{
+        console.log("Adding a note");
+        //Logic to add a note
+        let note = {
+          "_id": "648ec912aa6b8cd3d0d2b397f",
+          "user": "648dc4a6565f08aa90a1d821a",
+          "title": title,
+          "description": description,
+          "tag": tag,
+          "date": Date.now().toString(),
+          "__v": 0
+        }
+        setNotes(notes.concat(note));
+      }
+      //Delete a note
+      const deleteNote = (id)=>{
+        //Logic to delete a note
+        setNotes(notes.filter((note)=>{
+          return note._id !== id;
+        }));
+      }
+      //Edit a note
+      const editNote = ()=>{
+
+      }
     return (
-        <NotesContext.Provider value = {{notes, setNotes}}>
+        <NotesContext.Provider value = {{notes, addNote, deleteNote, editNote}}>
             {props.children}
         </NotesContext.Provider>
     );
