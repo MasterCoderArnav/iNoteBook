@@ -20,11 +20,11 @@ const NotesState = (props) => {
       }
       //Add a note
       const addNote = async (title, description, tag)=>{
-        const response = await fetch(`${host}/api/notes/addNote`, {
+        await fetch(`${host}/api/notes/addNote`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ4ZGM0YTY1NjVmMDhhYTkwYTFkODIxIn0sImlhdCI6MTY4NzA2MzQwNX0.u5M4RbyHKDsoZmcoOhq7YYOEb8WYkVr83NmCh9M2mPs"
+            "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ4ZGM0YTY1NjVmMDhhYTkwYTFkODIxIn0sImlhdCI6MTY4NzE5MzcwMn0.1HKDdBHr_wXiC2eSIbHEvHiRt1iBt7YL9Ui8Iibv01A"
           },
           body: JSON.stringify({title, description, tag}),
         });
@@ -42,7 +42,15 @@ const NotesState = (props) => {
         setNotes(notes.concat(note));
       }
       //Delete a note
-      const deleteNote = (id)=>{
+      const deleteNote = async (id)=>{
+        //API call to delete
+        await fetch(`${host}/api/notes/deleteNote/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ4ZGM0YTY1NjVmMDhhYTkwYTFkODIxIn0sImlhdCI6MTY4NzE5MzcwMn0.1HKDdBHr_wXiC2eSIbHEvHiRt1iBt7YL9Ui8Iibv01A"
+          }
+        });
         //Logic to delete a note
         setNotes(notes.filter((note)=>{
           return note._id !== id;
@@ -50,11 +58,11 @@ const NotesState = (props) => {
       }
       //Edit a note
       const editNote = async (id, title, description, tag)=>{
-        const response = await fetch(`${host}/api/notes/updateNote/${id}`, {
+        await fetch(`${host}/api/notes/updateNote/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ4ZGM0YTY1NjVmMDhhYTkwYTFkODIxIn0sImlhdCI6MTY4NzA2MzQwNX0.u5M4RbyHKDsoZmcoOhq7YYOEb8WYkVr83NmCh9M2mPs"
+            "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ4ZGM0YTY1NjVmMDhhYTkwYTFkODIxIn0sImlhdCI6MTY4NzE5MzcwMn0.1HKDdBHr_wXiC2eSIbHEvHiRt1iBt7YL9Ui8Iibv01A"
           },
           body: JSON.stringify({title, description, tag}),
         });

@@ -8,7 +8,7 @@ const Home = () => {
       <AddNote />
       <div className="row">
         <h2>Your Notes</h2>
-        <NotesComp />
+        <NotesComp/>
       </div>
     </div>
   );
