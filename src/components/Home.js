@@ -1,4 +1,5 @@
 import React from "react";
+import NotesComp from "./NotesComp";
 
 const Home = () => {
   return (
@@ -45,7 +46,10 @@ const Home = () => {
           </button>
         </form>
       </div>
-      <h2>Your Notes</h2>
+      <div className="row">
+        <h2>Your Notes</h2>
+        <NotesComp />
+      </div>
     </div>
   );
 };
