@@ -4,26 +4,29 @@ import NoteItem from "./NoteItem";
 
 const NotesComp = () => {
   const context = useContext(NotesContext);
-  const { notes, fetchAllNotes } = context;
-  const updateNote = (note) => {
+  const { notes, fetchAllNotes, editNote } = context;
+  const updateNote = (currentNote) => {
     ref.current.click();
-    setNote({etitle:note.title,edescription:note.description,etag:note.tag});
+    setNote({id: currentNote._id, etitle:currentNote.title, edescription:currentNote.description, etag:currentNote.tag});
   };
   useEffect(() => {
     fetchAllNotes();
     // eslint-disable-next-line
   }, []);
   const ref = useRef(null);
+  const refClose = useRef(null);
   const [note, setNote] = useState({
+    id: "",
     etitle: "",
     edescription: "",
-    etag: "default",
+    etag: "",
   });
   const onChange = (e) => {
     setNote({ ...note, [e.target.id]: e.target.value });
   };
   const handleClick = (e) => {
-    e.preventDefault();
+    editNote(note.id, note.etitle, note.edescription, note.etag)
+    refClose.current.click();
   };
   return (
     <>
@@ -70,6 +73,7 @@ const NotesComp = () => {
                     value={note.etitle}
                     aria-describedby="emailHelp"
                     onChange={onChange}
+                    minLength={5}
                   />
                 </div>
                 <div className="mb-3">
@@ -83,6 +87,8 @@ const NotesComp = () => {
                     name="edescription"
                     value={note.edescription}
                     onChange={onChange}
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -101,17 +107,12 @@ const NotesComp = () => {
               </form>
             </div>
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
+            <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button
                 onClick={handleClick}
                 type="button"
                 className="btn btn-primary"
+                disabled = {note.etitle.length<5 || note.edescription.length<5}
               >
                 Update Note
               </button>
@@ -120,6 +121,9 @@ const NotesComp = () => {
         </div>
       </div>
       <div className="row my-3">
+        <div className="container">
+          {notes.length===0&&"No Notes to display"}
+        </div>
         {notes.map((note) => {
           return <NoteItem note={note} updateNote={updateNote} />;
         })}

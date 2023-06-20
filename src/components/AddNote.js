@@ -15,6 +15,7 @@ const AddNote = () => {
   const handleClick = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    setNote({title:"", description:"", tag:"default"});
   };
   return (
     <div className="my-1">
@@ -31,6 +32,9 @@ const AddNote = () => {
             aria-describedby="emailHelp"
             name="title"
             onChange={onChange}
+            minLength={5}
+            value={note.title}
+            required
           />
         </div>
         <div className="mb-3">
@@ -43,6 +47,9 @@ const AddNote = () => {
             id="description"
             name="description"
             onChange={onChange}
+            minLength={5}
+            value={note.description}
+            required
           />
         </div>
         <div className="mb-3">
@@ -55,12 +62,14 @@ const AddNote = () => {
             id="tag"
             name="tag"
             onChange={onChange}
+            value={note.tag}
           />
         </div>
         <button
           type="submit"
           className="btn btn-primary my-2"
           onClick={handleClick}
+          disabled = {note.title.length<5 || note.description.length<5}
         >
           Add Note
         </button>
