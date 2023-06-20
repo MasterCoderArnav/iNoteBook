@@ -47,7 +47,6 @@ router.post(
             }
         }
         const authToken = await jwt.sign(data, JWT_TOKEN);
-        localStorage.setItem('token', authToken);
         console.log(authToken);
         res.json({success, authToken});
     }
@@ -89,7 +88,6 @@ router.post('/login', [
     }
     let success = true;
     const authtoken = jwt.sign(data, JWT_TOKEN);
-    localStorage.setItem('token', authtoken);
     res.json({success, authtoken})
 
   } catch (error) {

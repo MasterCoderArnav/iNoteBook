@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import NotesContext from "../context/Notes/NotesContext";
 
-const AddNote = () => {
+const AddNote = (props) => {
   const context = useContext(NotesContext);
   const { addNote } = context;
   const [note, setNote] = useState({
@@ -16,6 +16,7 @@ const AddNote = () => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
     setNote({title:"", description:"", tag:"default"});
+    props.showAlert("Note Added Successfully", "success");
   };
   return (
     <div className="my-1">
@@ -35,6 +36,7 @@ const AddNote = () => {
             minLength={5}
             value={note.title}
             required
+            style={{border:"1px solid black"}}
           />
         </div>
         <div className="mb-3">
@@ -50,6 +52,7 @@ const AddNote = () => {
             minLength={5}
             value={note.description}
             required
+            style={{border:"1px solid black"}}
           />
         </div>
         <div className="mb-3">
@@ -63,6 +66,7 @@ const AddNote = () => {
             name="tag"
             onChange={onChange}
             value={note.tag}
+            style={{border:"1px solid black"}}
           />
         </div>
         <button

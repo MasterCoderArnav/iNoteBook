@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import NotesContext from "../context/Notes/NotesContext";
 import NoteItem from "./NoteItem";
 
-const NotesComp = () => {
+const NotesComp = (props) => {
   const context = useContext(NotesContext);
   const { notes, fetchAllNotes, editNote } = context;
   const updateNote = (currentNote) => {
@@ -74,6 +74,7 @@ const NotesComp = () => {
                     aria-describedby="emailHelp"
                     onChange={onChange}
                     minLength={5}
+                    style={{border:"1px solid black"}}
                   />
                 </div>
                 <div className="mb-3">
@@ -89,6 +90,7 @@ const NotesComp = () => {
                     onChange={onChange}
                     minLength={5}
                     required
+                    style={{border:"1px solid black"}}
                   />
                 </div>
                 <div className="mb-3">
@@ -102,6 +104,7 @@ const NotesComp = () => {
                     name="etag"
                     value={note.etag}
                     onChange={onChange}
+                    style = {{border:"1px solid black"}}
                   />
                 </div>
               </form>
@@ -125,7 +128,7 @@ const NotesComp = () => {
           {notes.length===0&&"No Notes to display"}
         </div>
         {notes.map((note) => {
-          return <NoteItem note={note} updateNote={updateNote} />;
+          return <NoteItem note={note} updateNote={updateNote} showAlert={props.showAlert}/>;
         })}
       </div>
     </>
