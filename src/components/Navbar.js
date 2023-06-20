@@ -1,8 +1,13 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   let location = useLocation();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    window.localStorage.removeItem("token");
+    navigate("/login");
+  }
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark mb-3">
@@ -24,20 +29,51 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className={location.pathname==="/"?"nav-link active":"nav-link"} aria-current="page" to="/">
+                <Link
+                  className={
+                    location.pathname === "/" ? "nav-link active" : "nav-link"
+                  }
+                  aria-current="page"
+                  to="/"
+                >
                   Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className={location.pathname==="/about"?"nav-link active":"nav-link"} to="/about">
+                <Link
+                  className={
+                    location.pathname === "/about"
+                      ? "nav-link active"
+                      : "nav-link"
+                  }
+                  to="/about"
+                >
                   About
                 </Link>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              <Link className="btn btn-primary mx-2" to="/login" role="button">Login</Link>
-              <Link className="btn btn-primary mx-2" to="/signUp" role="button">SignUp</Link>
-            </form>
+            {!window.localStorage.getItem("token") ? (
+              <form className="d-flex" role="search">
+                <Link
+                  className="btn btn-primary mx-2"
+                  to="/login"
+                  role="button"
+                >
+                  Login
+                </Link>
+                <Link
+                  className="btn btn-primary mx-2"
+                  to="/signUp"
+                  role="button"
+                >
+                  SignUp
+                </Link>
+              </form>
+            ) : (
+              <button className="btn btn-primary mx-2" onClick={handleLogout}>
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </nav>
