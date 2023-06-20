@@ -22,15 +22,16 @@ router.post(
     const errors = validationResult(req);
     //If there are errors, return Bad request and the errors
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success: false, errors: errors.array() });
     }
     //Check whether the user with this email exists already
     try{
+        let success = true;
         let user = await User.findOne({ email: req.body.email });
         if (user) {
             return res
                 .status(400)
-                .json({ error: "Sorry a user with this email already exists" });
+                .json({ success: false, error: "Sorry a user with this email already exists" });
         }
         //Create a new user using User.create
         const salt  = await bcrypt.genSalt(10);
@@ -46,13 +47,14 @@ router.post(
             }
         }
         const authToken = await jwt.sign(data, JWT_TOKEN);
+        localStorage.setItem('token', authToken);
         console.log(authToken);
-        res.json({authToken});
+        res.json({success, authToken});
     }
     //Check for unexpected errors
     catch(error){
         console.error(error.message);
-        res.status(500).send("Some error occured");
+        res.status(500).json({success: false, error:"Some error occured"});
     }
   }
 );
@@ -72,12 +74,12 @@ router.post('/login', [
   try {
     let user = await User.findOne({email});
     if(!user){
-      return res.status(400).json({error: "Please try to login with correct credentials"});
+      return res.status(400).json({success: false, error: "Please try to login with correct credentials"});
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
     if(!passwordCompare){
-      return res.status(400).json({error: "Please try to login with correct credentials"});
+      return res.status(400).json({success: false, error: "Please try to login with correct credentials"});
     }
 
     const data = {
@@ -85,12 +87,14 @@ router.post('/login', [
         id: user.id
       }
     }
+    let success = true;
     const authtoken = jwt.sign(data, JWT_TOKEN);
-    res.json({authtoken})
+    localStorage.setItem('token', authtoken);
+    res.json({success, authtoken})
 
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({success: false, error:"Internal Server Error"});
   }
 });
 
